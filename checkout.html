@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Checkout</title>
+    <!-- <script src="https://js.stripe.com/v3/"></script> -->
+  </head>
+  <body>
+    <form id="loginForm">
+      <input type="email" name="email" placeholder="Email">
+      <button type="submit">Login</button>
+    </form>
+    <script>
+      const loginForm = document.getElementById('loginForm');
+      const emailInput = document.getElementsByName('email')[0];
+      loginForm.addEventListener('submit', handleSubmit);
+      function handleSubmit(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: emailInput.value })
+        });
+      }
+    </script>
+  </body>
+</html>

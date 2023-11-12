@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account</title>
+</head>
+<body>
+  <input type="radio" name="product" id="basic" value="basic">
+  <label for="basic">Basic</label>
+  <input type="radio" name="product" id="premium" value="premium">
+  <label for="premium">Premium</label>
+  <button id="checkout-button">Checkout</button>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const publishableKey = 'pk_test_51MbsqWHCWPiCjuuz5Yc9296YaXTIVCBZ4Te6KxA3pzu9canf0wagPJEf79i3Mim6dvc62OQ1F1Va7HgS06Nvr1wH00HNVhB9Cl';
+    const checkoutButton = document.getElementById('checkout-button');
+    checkoutButton.addEventListener('click', handleCheckoutButtonClick);
+    async function handleCheckoutButtonClick() {
+      const product = document.querySelector('input[name="product"]:checked').value;
+      fetch('/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ product })
+      }).then(res => res.json())
+        .then(({ sessionId }) => {
+          const stripe = Stripe(publishableKey);
+          stripe.redirectToCheckout({ sessionId });
+        });
+    }
+  </script>
+</body>
+</html>
